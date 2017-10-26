@@ -1,14 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
-	private Rigidbody rb;
 	public int speed = 5;
+	public Text scoreText;
+	public Text winText;
+
+	private int hitCount = 0;
+	private Rigidbody rb;
 
 	void Start() {
 		rb = GetComponent<Rigidbody> ();
+		SetScoreText ();
+		winText.text = "";
 	}
 
 	void FixedUpdate() {
@@ -24,8 +31,21 @@ public class Player : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("pickup")) {
 			Destroy(other.gameObject);
+			hitCount++;
+			SetScoreText ();
+			if (hitCount == 8) {
+				SetWinText ();
+			}
 		}
 
+	}
+
+	void SetScoreText() {
+		scoreText.text = "Score: " + hitCount.ToString ();
+	}
+
+	void SetWinText() {
+		winText.text = "You Win!";
 	}
 
 }
